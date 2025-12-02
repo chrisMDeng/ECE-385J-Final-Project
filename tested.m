@@ -24,23 +24,31 @@ folders1 = {sub1_pre, sub1_post, sub1_2, sub1_3};
 folders2 = {sub2_pre, sub2_post, sub2_2};
 folders3 = {sub3_pre, sub3_post, sub3_2, sub3_3};
 
-for i = 1:numel(folders1)
+folders = {sub3_pre, sub3_post, sub3_2, sub3_3};
+
+
+
+for i = 1:numel(folders)
     [a, b, c, d] = load_data(folders1{i});
     match_yes = [match_yes, a];
     match_no = [match_no, b];
     nomatch_yes = [nomatch_yes, c];
     nomatch_no = [nomatch_no, d];
 end
+
+
 %%
-b = nomatch_yes;
-lengths = cellfun(@(x) size(x, 2), b);
+a = [match_yes, match_no, nomatch_yes, nomatch_no];
+
+lengths = cellfun(@(x) size(x, 2), a);
 
 figure;
-bar(lengths);
-xlabel('Array Index');
-ylabel('Length (samples)');
-title('Lengths of Each Array');
+histogram(lengths, 'BinWidth', 10);   % choose bin size you want
+xlabel('Length Range (samples)');
+ylabel('Number of Cells');
+title('Distribution of Cell Lengths');
 grid on;
+
 
 %%
 
@@ -133,3 +141,24 @@ xlabel("Time (s)");
 ylabel("Amplitude");
 title("Signal vs Time");
 grid on;
+
+
+%% Plot all outcomes (multiple graphs
+
+all_sets = {match_yes, match_no, match_idk, ...
+            nomatch_yes, nomatch_no, nomatch_idk};
+
+names = {'match\_yes', 'match\_no', 'match\_idk', ...
+         'nomatch\_yes', 'nomatch\_no', 'nomatch\_idk'};
+
+for k = 1:numel(all_sets)
+    a = all_sets{k};                     % pick one dataset
+    lengths = cellfun(@(x) size(x,2), a);
+
+    figure;
+    histogram(lengths, 'BinWidth', 10);
+    xlabel('Length Range (samples)');
+    ylabel('Number of Cells');
+    title(['Distribution of Lengths: ', names{k}]);
+    grid on;
+end

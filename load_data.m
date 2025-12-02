@@ -1,4 +1,4 @@
-function [match_yes, match_no, nomatch_yes, nomatch_no] = load_data(folder_path)
+function [match_yes, match_no, match_idk, nomatch_yes, nomatch_no, nomatch_idk] = load_data(folder_path)
     
     % Get all file paths in a folder
     paths = {};
@@ -21,8 +21,11 @@ function [match_yes, match_no, nomatch_yes, nomatch_no] = load_data(folder_path)
     % Initialize match and nomatch arrays
     match_yes = {};
     match_no = {};
+    match_idk = {};
     nomatch_yes = {};
     nomatch_no = {};
+    nomatch_idk = {};
+
 
 
     for p = 1:numel(paths)
@@ -96,15 +99,19 @@ function [match_yes, match_no, nomatch_yes, nomatch_no] = load_data(folder_path)
                 % it's a match
                 if trigger_groups{k}(2) == 100
                     match_yes{end+1} = eeg_epochs{k}; % Store correct matched epoch
-                else
+                elseif trigger_groups{k}(2) == 200
                     match_no{end+1} = eeg_epochs{k}; % Store incorrect matched epoch
+                else
+                    match_idk{end+1} = eeg_epochs{k}; % Store incorrect matched epoch
                 end
             else
                 % it's not a match
                 if trigger_groups{k}(2) == 200
                     nomatch_yes{end+1} = eeg_epochs{k}; % Store correct non-matched epoch
-                else
+                elseif trigger_groups{k}(2) == 100
                     nomatch_no{end+1} = eeg_epochs{k}; % Store incorrect non-matched epoch
+                else
+                    nomatch_idk{end+1} = eeg_epochs{k}; % Store incorrect matched epoch
                 end
             end
         end

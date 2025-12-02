@@ -1,8 +1,10 @@
 function output = get_rows(arrays, end_index)
+    %filters out samples based on how many samples they have
+    %selects one channel
 
-    % KEEP ONLY CELLS WITH 260 OR MORE SAMPLES
+    % KEEP ONLY CELLS WITH end_index OR MORE SAMPLES
     lens = cellfun(@(x) size(x,2), arrays);  % measure lengths
-    arrays = arrays(lens >= end_index);            % keep only >= 260
+    arrays = arrays(lens >= end_index);            % keep only >= end_index
 
     n = numel(arrays);
 
